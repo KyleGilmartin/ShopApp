@@ -22,17 +22,17 @@ class RegisterActivity : popupActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // full screen
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        }else{
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        setpActionBar()
+//        // full screen
+//        @Suppress("DEPRECATION")
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+//            window.insetsController?.hide(WindowInsets.Type.statusBars())
+//        }else{
+//            window.setFlags(
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN
+//            )
+//        }
+        setupActionBar()
         tv_login.setOnClickListener {
             val intent = Intent(this,LoginActivity::class.java)
             startActivity(intent)
@@ -45,13 +45,16 @@ class RegisterActivity : popupActivity() {
 
 
     }
-    @SuppressLint("RestrictedApi")
-    private fun setpActionBar(){
+
+
+
+    private fun setupActionBar() {
+
         setSupportActionBar(toolbar_register_activity)
 
         val actionBar = supportActionBar
-        if(actionBar != null){
-            actionBar.setDefaultDisplayHomeAsUpEnabled(true)
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setHomeAsUpIndicator(R.drawable.ic_black_color_back_24dp)
         }
 
