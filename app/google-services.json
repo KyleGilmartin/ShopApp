@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824624486500",
+    "project_id": "shopapp-8979e",
+    "storage_bucket": "shopapp-8979e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824624486500:android:fd7dd3dbc316f934a02771",
+        "android_client_info": {
+          "package_name": "edu.kylegilmartin.shopapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824624486500-2eq3ugpp2bak4q2t0ddqrduqlmc4d8ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtIeDmuZVbvQWJ9VWX20_-j0BeaUsqZ4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824624486500-2eq3ugpp2bak4q2t0ddqrduqlmc4d8ph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
