@@ -112,6 +112,9 @@ class RegisterActivity : popupActivity() {
 
     private  fun registeruser(){
         if(validateRegisterDetails()){
+
+            showProgressDialog(resources.getString(R.string.please_wait))
+
             // Check with vaidate function if the entries are valid or not
             val email:String = et_email.text.toString().trim(){it <= ' '}
             val password:String= et_password.text.toString().trim(){it <= ' '}
@@ -119,6 +122,9 @@ class RegisterActivity : popupActivity() {
             // create an instance and create a register a user with email and password
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener(OnCompleteListener <AuthResult>{ task ->
+
+                        hideProgressDialog()
+
                         // if the register is successful
                         if(task.isSuccessful){
                             val firebaseUser:FirebaseUser = task.result!!.user!!

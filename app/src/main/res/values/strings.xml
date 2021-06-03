@@ -25,4 +25,5 @@
     <string name="err_msg_enter_confirm_password">Please enter confirm password.</string>
     <string name="err_msg_password_and_confirm_password_mismatch">Password and confirm password does not match.</string>
     <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
+    <string name="please_wait">Please Wait&#8230;</string>
 </resources>
