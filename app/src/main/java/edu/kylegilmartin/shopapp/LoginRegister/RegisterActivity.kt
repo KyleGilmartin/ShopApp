@@ -133,6 +133,11 @@ class RegisterActivity : popupActivity() {
                                     "you are registered successfully. your user id is ${firebaseUser.uid}",
                                     false
                             )
+
+                            //logout's the user and sends the user to the login page to sign in
+                            FirebaseAuth.getInstance().signOut()
+                            finish()
+
                         }else{
                             showErrorSnackBar(task.exception!!.message.toString(),true)
                         }

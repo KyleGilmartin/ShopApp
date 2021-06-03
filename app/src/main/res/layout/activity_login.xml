@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <edu.kylegilmartin.shopapp.widgets.MSPEditText
-            android:id="@+id/et_email"
+            android:id="@+id/et_email_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@id/til_email">
 
         <edu.kylegilmartin.shopapp.widgets.MSPEditText
-            android:id="@+id/et_password"
+            android:id="@+id/et_password_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
