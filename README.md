@@ -1,8 +1,8 @@
 # ShopApp
-Small eCommerce android app, with user auth
-6/4/21 - only user auth is complete
-[x] main shop page
-[x] user produce upload
+Small eCommerce android app, with user auth<br />
+6/4/21 - only user auth is complete<br />
+[x] main shop page<br />
+[x] user produce upload<br />
 [x] user profile
 [x] user item watch
 [x] user terms and conditions
