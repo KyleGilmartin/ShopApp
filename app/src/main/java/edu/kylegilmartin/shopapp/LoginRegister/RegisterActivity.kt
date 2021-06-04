@@ -5,15 +5,19 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.firestore.FirebaseClass
+import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -124,25 +128,48 @@ class RegisterActivity : popupActivity() {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
                     .addOnCompleteListener(OnCompleteListener <AuthResult>{ task ->
 
-                        hideProgressDialog()
+
 
                         // if the register is successful
                         if(task.isSuccessful){
+                            // Firebase registered user
                             val firebaseUser:FirebaseUser = task.result!!.user!!
 
-                            showErrorSnackBar(
-                                    "you are registered successfully. your user id is ${firebaseUser.uid}",
-                                    false
+                            val user = User(
+                                    firebaseUser.uid,
+                                    et_first_name.text.toString().trim{ it <= ' ' },
+                                    et_last_name.text.toString().trim { it <= ' ' },
+                                    et_email.text.toString().trim{ it <= ' ' }
+                            )
+
+                            FirebaseClass().registerUser(this@RegisterActivity,user)
+
+
+                            Handler().postDelayed(
+                                    {
+                                        val intent = Intent(this, LoginActivity::class.java)
+                                        startActivity(intent)
+                                    },
+                                    1000 // value in milliseconds
                             )
 
                             //logout's the user and sends the user to the login page to sign in
-                            FirebaseAuth.getInstance().signOut()
-                            finish()
+                            //FirebaseAuth.getInstance().signOut()
+                           // finish()
 
                         }else{
+                            hideProgressDialog()
                             showErrorSnackBar(task.exception!!.message.toString(),true)
                         }
                     })
         }
+    }
+
+    fun userRegistrationSuccess(){
+        hideProgressDialog()
+
+        Toast.makeText(this,resources.getString(R.string.register_success),Toast.LENGTH_SHORT).show()
+
+
     }
 }
