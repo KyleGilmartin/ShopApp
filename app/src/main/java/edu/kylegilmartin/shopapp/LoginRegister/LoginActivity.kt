@@ -6,12 +6,16 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import edu.kylegilmartin.shopapp.MainActivity
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.firestore.FirebaseClass
+import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -37,6 +41,19 @@ class LoginActivity : popupActivity(),View.OnClickListener {
         btn_login.setOnClickListener(this)
         tv_register.setOnClickListener(this)
 
+
+    }
+
+    fun userLoggedInSuccess(user: User){
+        hideProgressDialog()
+
+        Log.i("First Name", user.firstName)
+        Log.i("Last Name", user.lastName)
+        Log.i("User Email", user.email)
+
+
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
 
     }
 
@@ -89,13 +106,11 @@ class LoginActivity : popupActivity(),View.OnClickListener {
             // log in useing firebase
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener{task ->
-                       // hide the progress dialog
-                       hideProgressDialog()
 
                        if(task.isSuccessful){
-                           showErrorSnackBar("Your are logged in successfully",false)
-
+                          FirebaseClass().getUsersDetails(this@LoginActivity)
                        }else{
+                           hideProgressDialog()
                            showErrorSnackBar(task.exception!!.message.toString(),true)
                        }
                     }
