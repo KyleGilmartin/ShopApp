@@ -34,9 +34,7 @@ class RegisterActivity : popupActivity() {
 //        }
         setupActionBar()
         tv_login.setOnClickListener {
-            val intent = Intent(this,LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+          onBackPressed()
         }
 
         btn_register.setOnClickListener {
