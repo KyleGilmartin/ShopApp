@@ -31,4 +31,9 @@
     <string name="btn_lbl_submit">Submit</string>
     <string name="email_sent_success">"Email sent successfully to reset your password"</string>
     <string name="register_success">You were registered successfully</string>
+    <string name="title_complete_profile">COMPLETE PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
 </resources>

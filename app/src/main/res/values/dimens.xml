@@ -24,4 +24,13 @@
     <dimen name="progress_text_size">16sp</dimen>
     <dimen name="forgot_password_title_textSize">18sp</dimen>
     <dimen name="forgot_password_title_description_textSize">14sp</dimen>
+    <dimen name="user_image_background_stroke">4dp</dimen>
+    <dimen name="user_image_background_corner_radius">10dp</dimen>
+    <dimen name="profile_user_image_size">150dp</dimen>
+    <dimen name="profile_user_image_marginTop">50dp</dimen>
+    <dimen name="profile_user_photo_margin">3dp</dimen>
+    <dimen name="profile_radio_button_height">40dp</dimen>
+    <dimen name="profile_radio_button_marginStartEnd">3dp</dimen>
+    <dimen name="gender_radio_button_radius">5dp</dimen>
+    <dimen name="gender_radio_button_stroke_width">1dp</dimen>
 </resources>
