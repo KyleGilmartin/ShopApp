@@ -3,16 +3,16 @@ Small eCommerce android app, with user auth<br />
 6/4/21 - only user auth is complete<br />
 [x] main shop page<br />
 [x] user produce upload<br />
-[x] user profile
-[x] user item watch
-[x] user terms and conditions
-[x] user settings page
-[x] user item edit
-[x] user item delete
-[x] user adddress
-[x] user payment
-[x] user checkout
-[x] full UI
-[x] app name
-[x] user permissions
-[x] app permissions
+[x] user profile<br />
+[x] user item watch<br />
+[x] user terms and conditions<br />
+[x] user settings page<br />
+[x] user item edit<br />
+[x] user item delete<br />
+[x] user adddress<br />
+[x] user payment<br />
+[x] user checkout<br />
+[x] full UI<br />
+[x] app name<br />
+[x] user permissions<br />
+[x] app permissions<br />
