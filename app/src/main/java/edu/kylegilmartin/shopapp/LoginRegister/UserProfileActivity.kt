@@ -41,31 +41,42 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
+
                 R.id.iv_user_photo -> {
-                    // check if the permission is already allowed or we need to request for it.
-                    // check the READ_EXTERNAL_STORAGE permission and if it is not allowed we will request for the same.
-                    if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+                    if (ContextCompat.checkSelfPermission(
+                                    this,
+                                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                            )
+                            == PackageManager.PERMISSION_GRANTED
                     ) {
-                       // showErrorSnackBar("You already have the storage permission.", false)
-                        Constants.showImageChoosen(this)
+
+
+                        Constants.showImageChoosen(this@UserProfileActivity)
+
                     } else {
                         /*Requests permissions to be granted to this application. These permissions
                          must be requested in your manifest, they should not be granted to your app,
                          and they should have protection level*/
-                        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_STORAGE_PERMISSION_CODE
+                        ActivityCompat.requestPermissions(
+                                this,
+                                arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                                Constants.READ_STORAGE_PERMISSION_CODE
                         )
                     }
                 }
             }
         }
     }
+    // END
 
-    /*This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
-
-     @param requestCode
-    * @param permissions
-    * @param grantResults
-    */
+    /**
+     * This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     override fun onRequestPermissionsResult(
             requestCode: Int,
             permissions: Array<out String>,
@@ -76,8 +87,10 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
             //If permission is granted
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-               // showErrorSnackBar("The storage permission is granted.", false)
-                Constants.showImageChoosen(this)
+                /*showErrorSnackBar("The storage permission is granted.",false)*/
+
+                Constants.showImageChoosen(this@UserProfileActivity)
+
             } else {
                 //Displaying another toast if permission is not granted
                 Toast.makeText(
@@ -89,24 +102,32 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == Activity.RESULT_OK){
-            if(requestCode == Constants.PICK_IMAGE_REQUEST_CODE){
-                if(data != null){
-                    try {
-                        val selectedImageURL = data.data!!
 
-                        iv_user_photo.setImageURI(Uri.parse(selectedImageURL.toString()))
-                    }catch (e:IOException){
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE) {
+                if (data != null) {
+                    try {
+                        // The uri of selected image from phone storage.
+                        val selectedImageFileUri = data.data!!
+
+                        iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
+                    } catch (e: IOException) {
                         e.printStackTrace()
-                        Toast.makeText(this,resources.getString(R.string.image_selection_failed),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                                this@UserProfileActivity,
+                                resources.getString(R.string.image_selection_failed),
+                                Toast.LENGTH_SHORT
+                        )
+                                .show()
                     }
                 }
-            }else if (resultCode == Activity.RESULT_CANCELED) {
-                // A log is printed when user close or cancel the image selection.
-                Log.e("Request Cancelled", "Image selection cancelled")
             }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            // A log is printed when user close or cancel the image selection.
+            Log.e("Request Cancelled", "Image selection cancelled")
         }
     }
+    // END
 }

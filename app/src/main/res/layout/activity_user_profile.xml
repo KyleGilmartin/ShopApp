@@ -52,19 +52,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/user_image_background" />
 
                 <ImageView
                     android:id="@+id/iv_user_photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/profile_user_photo_margin"
-                    android:background="@color/colorSecondaryText"
+                    android:background="@color/colorLightGrey"
                     android:contentDescription="@string/content_description"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_user_placeholder" />
-
-
-
 
 
             </FrameLayout>
@@ -165,7 +166,6 @@
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <RadioGroup
                 android:id="@+id/rg_gender"
                 android:layout_width="match_parent"
@@ -231,5 +231,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
