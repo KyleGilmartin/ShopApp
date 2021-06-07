@@ -16,6 +16,7 @@ import edu.kylegilmartin.shopapp.MainActivity
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User
+import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
@@ -53,6 +54,7 @@ class LoginActivity : popupActivity(),View.OnClickListener {
 
         if(user.profileCompleted == 0){
             val intent = Intent(this,UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }else{
             startActivity(Intent(this,MainActivity::class.java))
