@@ -51,8 +51,12 @@ class LoginActivity : popupActivity(),View.OnClickListener {
         Log.i("Last Name", user.lastName)
         Log.i("User Email", user.email)
 
-
-        startActivity(Intent(this,MainActivity::class.java))
+        if(user.profileCompleted == 0){
+            val intent = Intent(this,UserProfileActivity::class.java)
+            startActivity(intent)
+        }else{
+            startActivity(Intent(this,MainActivity::class.java))
+        }
         finish()
 
     }
