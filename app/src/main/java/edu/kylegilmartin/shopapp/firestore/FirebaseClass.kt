@@ -9,6 +9,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
+import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
@@ -75,6 +76,28 @@ class FirebaseClass {
                         activity.hideProgressDialog()
                     }
                 }
+            }
+    }
+
+    fun updateUserProfileDetails(activity: Activity,userHashMap: HashMap<String, Any>){
+        mFirestore.collection(Constants.USERS).document(getCurrentUserID())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                when(activity){
+                    is UserProfileActivity -> {
+                       activity.userProfileUpdateSuccess()
+                    }
+                }
+
+            }
+            .addOnFailureListener {e ->
+                when(activity){
+                    is UserProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(activity.javaClass.simpleName,"Error while updating profile",e)
             }
     }
 }

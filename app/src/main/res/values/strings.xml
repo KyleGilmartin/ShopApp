@@ -38,4 +38,6 @@
     <string name="btn_lbl_save">Save</string>
     <string name="read_storage_permission_denied">Oops, you just denied the permission for storage. You can also allow it from settings.</string>
     <string name="image_selection_failed">Image selection Failed.</string>
+    <string name="err_msg_enter_mobile_number">Please enter mobile number.</string>
+    <string name="msg_profile_update_success">Your profile has been updated.</string>
 </resources>

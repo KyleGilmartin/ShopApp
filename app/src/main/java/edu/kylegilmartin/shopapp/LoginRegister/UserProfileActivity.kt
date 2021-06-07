@@ -3,40 +3,47 @@ package edu.kylegilmartin.shopapp.LoginRegister
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import edu.kylegilmartin.shopapp.MainActivity
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import edu.kylegilmartin.shopapp.widgets.popupActivity
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.activity_user_profile.et_email
+import kotlinx.android.synthetic.main.activity_user_profile.et_first_name
+import kotlinx.android.synthetic.main.activity_user_profile.et_last_name
 import java.io.IOException
-import java.util.jar.Manifest
 
 class UserProfileActivity : popupActivity(), View.OnClickListener {
+
+  private lateinit var mUserDetails: User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
-        var userDetails: User = User()
+
         if(intent.hasExtra(Constants.EXTRA_USER_DETAILS)){
-            userDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
+            mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
 
 
-        et_first_name.setText(userDetails.firstName)
-        et_last_name.setText(userDetails.lastName)
+        et_first_name.setText(mUserDetails.firstName)
+        et_last_name.setText(mUserDetails.lastName)
         et_email.isEnabled =false
-        et_email.setText(userDetails.email)
+        et_email.setText(mUserDetails.email)
 
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
+        btn_submit.setOnClickListener(this@UserProfileActivity)
     }
 
     override fun onClick(v: View?) {
@@ -66,10 +73,41 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                         )
                     }
                 }
+                R.id.btn_submit -> {
+                    if (validateUserProfileDetails()) {
+                        val userHashMap = HashMap<String, Any>()
+                        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
+
+                        val gender = if (rb_male.isChecked) {
+                            Constants.MALE
+                        } else {
+                            Constants.FEMALE
+                        }
+                        if(mobileNumber.isEmpty()){
+                            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+                        }
+                        userHashMap[Constants.GENDER] = gender
+                        userHashMap[Constants.MOBILE] = mobileNumber
+                        userHashMap[Constants.FIRSTNAME] = et_first_name.text.toString().trim { it <= ' ' }
+                        userHashMap[Constants.LASTNAME] = et_last_name.text.toString().trim { it <= ' ' }
+                        showProgressDialog(resources.getString(R.string.please_wait))
+
+                        FirebaseClass().updateUserProfileDetails(this,userHashMap)
+                        //showErrorSnackBar("Your details are valid. you can update them",false)
+                    }
+                }
             }
         }
     }
-    // END
+
+    fun userProfileUpdateSuccess(){
+        hideProgressDialog()
+
+        Toast.makeText(this,resources.getString(R.string.msg_profile_update_success),Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
+    }
+
 
     /**
      * This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
@@ -131,5 +169,31 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
             Log.e("Request Cancelled", "Image selection cancelled")
         }
     }
-    // END
+
+    private fun validateUserProfileDetails():Boolean{
+        return when{
+            TextUtils.isEmpty(et_first_name.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_last_name.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
+                false
+            }
+
+            TextUtils.isEmpty(et_email.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                false
+            }
+             TextUtils.isEmpty(et_mobile_number.text.toString().trim{it <= ' '}) -> {
+              showErrorSnackBar(resources.getString(R.string.err_msg_enter_mobile_number),true)
+              false
+        }else ->{
+            true
+        }
+        }
+    }
+
+
 }
