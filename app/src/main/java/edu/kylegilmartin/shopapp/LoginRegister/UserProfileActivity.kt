@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.Constants
+import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import java.io.IOException
@@ -112,7 +113,8 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                         // The uri of selected image from phone storage.
                         val selectedImageFileUri = data.data!!
 
-                        iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
+                       // iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
+                        GlideLoader(this).loadUserPicture(selectedImageFileUri,iv_user_photo)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(
