@@ -114,7 +114,7 @@ class LoginActivity : popupActivity(),View.OnClickListener {
                     .addOnCompleteListener{task ->
 
                        if(task.isSuccessful){
-                          FirebaseClass().getUsersDetails(this@LoginActivity)
+                          FirebaseClass().getUserDetails(this@LoginActivity)
                        }else{
                            hideProgressDialog()
                            showErrorSnackBar(task.exception!!.message.toString(),true)

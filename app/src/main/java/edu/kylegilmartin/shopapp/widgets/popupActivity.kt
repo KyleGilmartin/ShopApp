@@ -12,42 +12,53 @@ import kotlinx.android.synthetic.main.dialog_progress.*
 
 open class popupActivity : AppCompatActivity() {
 
-     private lateinit var mProgressDialog: Dialog
 
-    fun showErrorSnackBar(message: String,errorMessage: Boolean){
-        val snackbar =
-            Snackbar.make(findViewById(android.R.id.content),message,Snackbar.LENGTH_LONG)
-        val snackbarView = snackbar.view
 
-        if(errorMessage){
-            snackbarView.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorSnackBarError
-                )
+    private lateinit var mProgressDialog: Dialog
+
+
+    fun showErrorSnackBar(message: String, errorMessage: Boolean) {
+        val snackBar =
+                Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
+        val snackBarView = snackBar.view
+
+        if (errorMessage) {
+            snackBarView.setBackgroundColor(
+                    ContextCompat.getColor(
+                            this,
+                            R.color.colorSnackBarError
+                    )
             )
         }else{
-            snackbarView.setBackgroundColor(
-                ContextCompat.getColor(
-                    this,
-                    R.color.colorSnackBarSuccess
-                )
+            snackBarView.setBackgroundColor(
+                    ContextCompat.getColor(
+                            this,
+                            R.color.colorSnackBarSuccess
+                    )
             )
-
         }
-        snackbar.show()
+        snackBar.show()
     }
 
-     fun showProgressDialog(text:String){
-         mProgressDialog = Dialog(this)
 
-         mProgressDialog.setContentView(R.layout.dialog_progress)
-         mProgressDialog.tv_progress_text.text = text
-         mProgressDialog.setCancelable(false)
-         mProgressDialog.setCanceledOnTouchOutside(false)
-         mProgressDialog.show()
-     }
-    fun hideProgressDialog(){
+    fun showProgressDialog(text: String) {
+        mProgressDialog = Dialog(this)
+
+        /*Set the screen content from a layout resource.
+        The resource will be inflated, adding all top-level views to the screen.*/
+        mProgressDialog.setContentView(R.layout.dialog_progress)
+
+        mProgressDialog.tv_progress_text.text = text
+
+        mProgressDialog.setCancelable(false)
+        mProgressDialog.setCanceledOnTouchOutside(false)
+
+        //Start the dialog and display it on screen.
+        mProgressDialog.show()
+    }
+
+
+    fun hideProgressDialog() {
         mProgressDialog.dismiss()
     }
 }

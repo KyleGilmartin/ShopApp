@@ -11,8 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val sharedPreferences = getSharedPreferences(Constants.SHOP_PREFERENCES,Context.MODE_PRIVATE)
-        val username =sharedPreferences.getString(Constants.LOGGED_IN_USERNAME,"")!!
-        displayName.text = "Hello ${username.toString()}"
+//        val sharedPreferences = getSharedPreferences(Constants.SHOP_PREFERENCES,Context.MODE_PRIVATE)
+//        val username =sharedPreferences.getString(Constants.LOGGED_IN_USERNAME,"")!!
+//        displayName.text = "Hello ${username.toString()}"
     }
 }

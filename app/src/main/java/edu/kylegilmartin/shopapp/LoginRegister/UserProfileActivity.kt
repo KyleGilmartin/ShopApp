@@ -26,23 +26,41 @@ import java.io.IOException
 
 class UserProfileActivity : popupActivity(), View.OnClickListener {
 
-  private lateinit var mUserDetails: User
+
+    // Instance of User data model class. We will initialize it later on.
+    private lateinit var mUserDetails: User
+
+
+    /**
+     * This function is auto created by Android when the Activity Class is created.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
+        //This call the parent constructor
         super.onCreate(savedInstanceState)
+        // This is used to align the xml view to this class
         setContentView(R.layout.activity_user_profile)
 
 
-        if(intent.hasExtra(Constants.EXTRA_USER_DETAILS)){
+        // Create a instance of the User model class.
+        /*var userDetails: User = User()*/
+
+
+        if (intent.hasExtra(Constants.EXTRA_USER_DETAILS)) {
+            // Get the user details from intent as a ParcelableExtra.
             mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
 
+        //the some of the edittext components are disabled because it is added at a time of Registration.
 
         et_first_name.setText(mUserDetails.firstName)
         et_last_name.setText(mUserDetails.lastName)
-        et_email.isEnabled =false
+        et_email.isEnabled = false
         et_email.setText(mUserDetails.email)
 
+        // Assign the on click event to the user profile photo.
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
+
+        // Assign the on click event to the SAVE button.
         btn_submit.setOnClickListener(this@UserProfileActivity)
     }
 
@@ -58,10 +76,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                             )
                             == PackageManager.PERMISSION_GRANTED
                     ) {
-
-
                         Constants.showImageChoosen(this@UserProfileActivity)
-
                     } else {
                         /*Requests permissions to be granted to this application. These permissions
                          must be requested in your manifest, they should not be granted to your app,
@@ -73,9 +88,17 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                         )
                     }
                 }
+
                 R.id.btn_submit -> {
+
                     if (validateUserProfileDetails()) {
+
+
                         val userHashMap = HashMap<String, Any>()
+
+                        // Here the field which are not editable needs no update. So, we will update user Mobile Number and Gender for now.
+
+                        // Here we get the text from editText and trim the space
                         val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
 
                         val gender = if (rb_male.isChecked) {
@@ -83,31 +106,30 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                         } else {
                             Constants.FEMALE
                         }
-                        if(mobileNumber.isEmpty()){
+
+                        if (mobileNumber.isNotEmpty()) {
                             userHashMap[Constants.MOBILE] = mobileNumber.toLong()
                         }
+
                         userHashMap[Constants.GENDER] = gender
-                        userHashMap[Constants.MOBILE] = mobileNumber
-                        userHashMap[Constants.FIRSTNAME] = et_first_name.text.toString().trim { it <= ' ' }
-                        userHashMap[Constants.LASTNAME] = et_last_name.text.toString().trim { it <= ' ' }
+
+
+                        /*showErrorSnackBar("Your details are valid. You can update them.", false)*/
+
+                        // Show the progress dialog.
                         showProgressDialog(resources.getString(R.string.please_wait))
 
-                        FirebaseClass().updateUserProfileDetails(this,userHashMap)
-                        //showErrorSnackBar("Your details are valid. you can update them",false)
+                        // call the registerUser function of FireStore class to make an entry in the database.
+                        FirebaseClass().updateUserProfileData(
+                                this@UserProfileActivity,
+                                userHashMap
+                        )
+                        // END
                     }
                 }
             }
         }
     }
-
-    fun userProfileUpdateSuccess(){
-        hideProgressDialog()
-
-        Toast.makeText(this,resources.getString(R.string.msg_profile_update_success),Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this,MainActivity::class.java))
-        finish()
-    }
-
 
     /**
      * This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
@@ -125,11 +147,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
             //If permission is granted
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                /*showErrorSnackBar("The storage permission is granted.",false)*/
-
                 Constants.showImageChoosen(this@UserProfileActivity)
-
             } else {
                 //Displaying another toast if permission is not granted
                 Toast.makeText(
@@ -141,7 +159,20 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         }
     }
 
-
+    /**
+     * Receive the result from a previous call to
+     * {@link #startActivityForResult(Intent, int)}.  This follows the
+     * related Activity API as described there in
+     * {@link Activity#onActivityResult(int, int, Intent)}.
+     *
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -151,8 +182,10 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                         // The uri of selected image from phone storage.
                         val selectedImageFileUri = data.data!!
 
-                       // iv_user_photo.setImageURI(Uri.parse(selectedImageFileUri.toString()))
-                        GlideLoader(this).loadUserPicture(selectedImageFileUri,iv_user_photo)
+                        GlideLoader(this@UserProfileActivity).loadUserPicture(
+                                selectedImageFileUri,
+                                iv_user_photo
+                        )
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -170,30 +203,46 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         }
     }
 
-    private fun validateUserProfileDetails():Boolean{
-        return when{
-            TextUtils.isEmpty(et_first_name.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
-                false
-            }
+    /**
+     * A function to validate the input entries for profile details.
+     */
+    private fun validateUserProfileDetails(): Boolean {
+        return when {
 
-            TextUtils.isEmpty(et_last_name.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
-                false
-            }
+            // We have kept the user profile picture is optional.
+            // The FirstName, LastName, and Email Id are not editable when they come from the login screen.
+            // The Radio button for Gender always has the default selected value.
 
-            TextUtils.isEmpty(et_email.text.toString().trim { it <= ' ' }) -> {
-                showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+            // Check if the mobile number is not empty as it is mandatory to enter.
+            TextUtils.isEmpty(et_mobile_number.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_mobile_number), true)
                 false
             }
-             TextUtils.isEmpty(et_mobile_number.text.toString().trim{it <= ' '}) -> {
-              showErrorSnackBar(resources.getString(R.string.err_msg_enter_mobile_number),true)
-              false
-        }else ->{
-            true
-        }
+            else -> {
+                true
+            }
         }
     }
 
 
+    /**
+     * A function to notify the success result and proceed further accordingly after updating the user details.
+     */
+    fun userProfileUpdateSuccess() {
+
+        // Hide the progress dialog
+        hideProgressDialog()
+
+        Toast.makeText(
+                this@UserProfileActivity,
+                resources.getString(R.string.msg_profile_update_success),
+                Toast.LENGTH_SHORT
+        ).show()
+
+
+        // Redirect to the Main Screen after profile completion.
+        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        finish()
+    }
+    // END
 }
