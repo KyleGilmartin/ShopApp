@@ -16,3 +16,6 @@ Small eCommerce android app, with user auth<br />
 [x] app name<br />
 [x] user permissions<br />
 [x] app permissions<br />
+
+
+links glide: https://github.com/bumptech/glide
