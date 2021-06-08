@@ -48,11 +48,9 @@ class LoginActivity : popupActivity(),View.OnClickListener {
     fun userLoggedInSuccess(user: User){
         hideProgressDialog()
 
-        Log.i("First Name", user.firstName)
-        Log.i("Last Name", user.lastName)
-        Log.i("User Email", user.email)
 
-        if(user.profileCompleted == 0){
+
+        if(user.profileCompleted == Constants.USER_PROFILE_INCOMPLETE_CODE){
             val intent = Intent(this,UserProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)

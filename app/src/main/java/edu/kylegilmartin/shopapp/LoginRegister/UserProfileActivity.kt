@@ -137,6 +137,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
         userHashMap[Constants.GENDER] = gender
 
+        userHashMap[Constants.COMPLETE_PROFILE] = Constants.USER_PROFILE_COMPLETE_CODE
 
         /*showErrorSnackBar("Your details are valid. You can update them.", false)*/
 
