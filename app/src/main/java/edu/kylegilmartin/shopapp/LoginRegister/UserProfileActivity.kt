@@ -31,6 +31,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
     // Instance of User data model class. We will initialize it later on.
     private lateinit var mUserDetails: User
     private var mSelectedImageUri:Uri? = null
+    private var mUserProfileImageURL:String = ""
 
 
     /**
@@ -93,48 +94,60 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
                 R.id.btn_submit -> {
 
-                    showProgressDialog(resources.getString(R.string.please_wait))
 
-                    FirebaseClass().uploadImageToCloudStorage(this,mSelectedImageUri)
 
                     if (validateUserProfileDetails()) {
 
-
-                        val userHashMap = HashMap<String, Any>()
-
-                        // Here the field which are not editable needs no update. So, we will update user Mobile Number and Gender for now.
-
-                        // Here we get the text from editText and trim the space
-                        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
-
-                        val gender = if (rb_male.isChecked) {
-                            Constants.MALE
-                        } else {
-                            Constants.FEMALE
-                        }
-
-                        if (mobileNumber.isNotEmpty()) {
-                            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
-                        }
-
-                        userHashMap[Constants.GENDER] = gender
-
-
-                        /*showErrorSnackBar("Your details are valid. You can update them.", false)*/
-
-                        // Show the progress dialog.
                         showProgressDialog(resources.getString(R.string.please_wait))
 
-                        // call the registerUser function of FireStore class to make an entry in the database.
-                        FirebaseClass().updateUserProfileData(
-                                this@UserProfileActivity,
-                                userHashMap
-                        )
+                        if(mSelectedImageUri != null){
+
+                            FirebaseClass().uploadImageToCloudStorage(this,mSelectedImageUri)
+                        }else{
+                            updateUserProfileDetails()
+                        }
 
                     }
                 }
             }
         }
+    }
+
+    private fun updateUserProfileDetails(){
+        val userHashMap = HashMap<String, Any>()
+
+        // Here the field which are not editable needs no update. So, we will update user Mobile Number and Gender for now.
+
+        // Here we get the text from editText and trim the space
+        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
+
+        val gender = if (rb_male.isChecked) {
+            Constants.MALE
+        } else {
+            Constants.FEMALE
+        }
+
+        if(mUserProfileImageURL.isNotEmpty()){
+            userHashMap[Constants.IMAGE] = mUserProfileImageURL
+        }
+
+        if (mobileNumber.isNotEmpty()) {
+            userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+        }
+
+        userHashMap[Constants.GENDER] = gender
+
+
+        /*showErrorSnackBar("Your details are valid. You can update them.", false)*/
+
+        // Show the progress dialog.
+       // showProgressDialog(resources.getString(R.string.please_wait))
+
+        // call the registerUser function of FireStore class to make an entry in the database.
+        FirebaseClass().updateUserProfileData(
+                this@UserProfileActivity,
+                userHashMap
+        )
     }
 
     /**
@@ -252,8 +265,11 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
     }
 
     fun imageUploadSuccess(imageURL:String){
-        hideProgressDialog()
-        Toast.makeText(this,"Image Uploaded success",Toast.LENGTH_SHORT).show()
+       // hideProgressDialog()
+        //Toast.makeText(this,"Image Uploaded success",Toast.LENGTH_SHORT).show()
+
+        mUserProfileImageURL = imageURL
+        updateUserProfileDetails()
     }
 
 }
