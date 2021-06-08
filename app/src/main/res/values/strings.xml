@@ -41,11 +41,12 @@
     <string name="err_msg_enter_mobile_number">Please enter mobile number.</string>
     <string name="msg_profile_update_success">Your profile has been updated.</string>
 
-<!--<string name="title_activity_dashboard">MainActivity</string>-->
+    <!--<string name="title_activity_dashboard">MainActivity</string>-->
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="please_click_bac_again_to_exit">Please click back again to exit</string>
     <string name="title_products">Products</string>
     <string name="title_orders">Orders</string>
+    <string name="action_settings">Settings</string>
 </resources>
