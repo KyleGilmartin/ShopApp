@@ -1,10 +1,8 @@
-package edu.kylegilmartin.shopapp
+package edu.kylegilmartin.shopapp.ui.activities
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import edu.kylegilmartin.shopapp.widgets.Constants
-import kotlinx.android.synthetic.main.activity_main.*
+import edu.kylegilmartin.shopapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -11,7 +11,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import edu.kylegilmartin.shopapp.MainActivity
+import edu.kylegilmartin.shopapp.ui.activities.MainActivity
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User

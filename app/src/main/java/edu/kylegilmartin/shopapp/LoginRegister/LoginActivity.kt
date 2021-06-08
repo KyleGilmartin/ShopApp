@@ -1,19 +1,11 @@
 package edu.kylegilmartin.shopapp.LoginRegister
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
-import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
-import edu.kylegilmartin.shopapp.DashboardActivity
-import edu.kylegilmartin.shopapp.MainActivity
+import edu.kylegilmartin.shopapp.ui.activities.DashboardActivity
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User
@@ -56,7 +48,7 @@ class LoginActivity : popupActivity(),View.OnClickListener {
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }else{
-            startActivity(Intent(this,DashboardActivity::class.java))
+            startActivity(Intent(this, DashboardActivity::class.java))
         }
         finish()
 
