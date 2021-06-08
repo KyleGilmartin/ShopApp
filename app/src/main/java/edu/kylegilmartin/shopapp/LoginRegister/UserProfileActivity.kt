@@ -3,6 +3,7 @@ package edu.kylegilmartin.shopapp.LoginRegister
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -29,6 +30,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
     // Instance of User data model class. We will initialize it later on.
     private lateinit var mUserDetails: User
+    private var mSelectedImageUri:Uri? = null
 
 
     /**
@@ -91,6 +93,10 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
                 R.id.btn_submit -> {
 
+                    showProgressDialog(resources.getString(R.string.please_wait))
+
+                    FirebaseClass().uploadImageToCloudStorage(this,mSelectedImageUri)
+
                     if (validateUserProfileDetails()) {
 
 
@@ -124,7 +130,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                                 this@UserProfileActivity,
                                 userHashMap
                         )
-                        // END
+
                     }
                 }
             }
@@ -180,10 +186,10 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
                 if (data != null) {
                     try {
                         // The uri of selected image from phone storage.
-                        val selectedImageFileUri = data.data!!
+                        mSelectedImageUri = data.data!!
 
                         GlideLoader(this@UserProfileActivity).loadUserPicture(
-                                selectedImageFileUri,
+                                mSelectedImageUri!!,
                                 iv_user_photo
                         )
                     } catch (e: IOException) {
@@ -244,5 +250,10 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
         finish()
     }
-    // END
+
+    fun imageUploadSuccess(imageURL:String){
+        hideProgressDialog()
+        Toast.makeText(this,"Image Uploaded success",Toast.LENGTH_SHORT).show()
+    }
+
 }
