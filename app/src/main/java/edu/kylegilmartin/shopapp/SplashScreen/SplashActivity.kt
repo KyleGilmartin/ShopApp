@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.WindowInsets
 import android.view.WindowManager
+import edu.kylegilmartin.shopapp.DashboardActivity
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.MainActivity
 import edu.kylegilmartin.shopapp.R
@@ -29,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
        }
         @Suppress("DEPRECATION")
         Handler().postDelayed({
-            startActivity(Intent(this,LoginActivity::class.java))
+            startActivity(Intent(this,DashboardActivity::class.java))
             finish()
            },
                 2500

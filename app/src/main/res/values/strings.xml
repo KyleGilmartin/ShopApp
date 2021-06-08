@@ -40,4 +40,8 @@
     <string name="image_selection_failed">Image selection Failed.</string>
     <string name="err_msg_enter_mobile_number">Please enter mobile number.</string>
     <string name="msg_profile_update_success">Your profile has been updated.</string>
+    <string name="title_activity_dashboard">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

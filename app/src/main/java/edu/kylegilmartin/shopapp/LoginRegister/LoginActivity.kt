@@ -12,6 +12,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
+import edu.kylegilmartin.shopapp.DashboardActivity
 import edu.kylegilmartin.shopapp.MainActivity
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
@@ -55,7 +56,7 @@ class LoginActivity : popupActivity(),View.OnClickListener {
             intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
             startActivity(intent)
         }else{
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,DashboardActivity::class.java))
         }
         finish()
 
