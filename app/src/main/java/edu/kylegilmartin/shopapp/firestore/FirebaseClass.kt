@@ -14,6 +14,7 @@ import com.google.firebase.storage.StorageReference
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
+import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
@@ -198,6 +199,19 @@ class FirebaseClass {
                 }
 
 
+    }
+
+    fun uploadProductDetails(activity: AddProductActivity,productInfo:Product){
+        mFireStore.collection(Constants.PRODUCTS)
+                .document()
+                .set(productInfo, SetOptions.merge())
+                .addOnSuccessListener {
+                    activity.productUploadSuccess()
+                }
+                .addOnFailureListener {e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while uploading product",e)
+                }
     }
 
 }

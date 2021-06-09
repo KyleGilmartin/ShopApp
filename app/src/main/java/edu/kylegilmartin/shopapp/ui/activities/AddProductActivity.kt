@@ -1,6 +1,7 @@
 package edu.kylegilmartin.shopapp.ui.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
+import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import edu.kylegilmartin.shopapp.widgets.popupActivity
@@ -21,6 +23,7 @@ import java.io.IOException
 
 class AddProductActivity : popupActivity() , View.OnClickListener{
     private var mSelectedImageFileURI: Uri? = null
+    private var mProductImageURL: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,10 +150,30 @@ class AddProductActivity : popupActivity() , View.OnClickListener{
     }
 
     fun imageUploadSuccess(imageURL:String){
-         hideProgressDialog()
-        //Toast.makeText(this,"Image Uploaded success",Toast.LENGTH_SHORT).show()
+         mProductImageURL = imageURL
+        uploadProductDetails()
+    }
 
-       showErrorSnackBar("image uploaded",false)
+    fun productUploadSuccess(){
+        hideProgressDialog()
+        Toast.makeText(this,"product uploaded",Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+    private fun uploadProductDetails(){
+        val username = this.getSharedPreferences(Constants.SHOP_PREFERENCES,Context.MODE_PRIVATE).getString(Constants.LOGGED_IN_USERNAME,"")!!
+
+        val product = Product(
+                FirebaseClass().getCurrentUserID(),
+                username,
+                et_product_title.text.toString().trim { it <= ' ' },
+                et_product_price.text.toString().trim { it <= ' ' },
+                et_product_description.text.toString().trim { it <= ' ' },
+                et_product_quantity.text.toString().trim { it <= ' ' },
+                mProductImageURL
+
+        )
+        FirebaseClass().uploadProductDetails(this,product)
     }
 
 
