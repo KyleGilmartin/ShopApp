@@ -143,7 +143,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
                         if(mSelectedImageUri != null){
 
-                            FirebaseClass().uploadImageToCloudStorage(this,mSelectedImageUri)
+                            FirebaseClass().uploadImageToCloudStorage(this,mSelectedImageUri,Constants.USER_PROFILE_IMAGE)
                         }else{
                             updateUserProfileDetails()
                         }

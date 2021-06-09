@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import com.bumptech.glide.load.ImageHeaderParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -14,6 +15,7 @@ import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.models.User
+import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
@@ -154,9 +156,9 @@ class FirebaseClass {
                 }
     }
 
-    fun uploadImageToCloudStorage(activity: Activity,imageFileURI:Uri?){
+    fun uploadImageToCloudStorage(activity: Activity,imageFileURI:Uri?,imageType: String){
         var sRef:StorageReference = FirebaseStorage.getInstance().reference.child(
-                Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "." + Constants.getFileExtension(
+                imageType + System.currentTimeMillis() + "." + Constants.getFileExtension(
                         activity,
                         imageFileURI
                 )
@@ -172,6 +174,9 @@ class FirebaseClass {
                             is UserProfileActivity ->{
                                 activity.imageUploadSuccess(uri.toString())
                             }
+                            is AddProductActivity ->{
+                                activity.imageUploadSuccess(uri.toString())
+                            }
                         }
                     }
 
@@ -179,6 +184,9 @@ class FirebaseClass {
                 .addOnFailureListener { exception ->
                     when (activity) {
                         is UserProfileActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                        is AddProductActivity ->{
                             activity.hideProgressDialog()
                         }
                     }
