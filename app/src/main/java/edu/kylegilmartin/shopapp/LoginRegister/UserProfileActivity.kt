@@ -15,14 +15,17 @@ import edu.kylegilmartin.shopapp.ui.activities.MainActivity
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User
+import edu.kylegilmartin.shopapp.ui.activities.DashboardActivity
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.activity_user_profile.et_email
 import kotlinx.android.synthetic.main.activity_user_profile.et_first_name
 import kotlinx.android.synthetic.main.activity_user_profile.et_last_name
+import kotlinx.android.synthetic.main.activity_user_profile.iv_user_photo
 import java.io.IOException
 
 class UserProfileActivity : popupActivity(), View.OnClickListener {
@@ -53,6 +56,34 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
             mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
 
+        if(mUserDetails.profileCompleted == Constants.USER_PROFILE_INCOMPLETE_CODE){
+            tv_title_name.text = resources.getString(R.string.title_complete_profile)
+
+            et_first_name.setText(mUserDetails.firstName)
+            et_last_name.setText(mUserDetails.lastName)
+            et_email.isEnabled = false
+            et_email.setText(mUserDetails.email)
+
+        }else{
+            setupActionBar()
+            tv_title_name.text = resources.getString(R.string.title_edit_profile)
+            GlideLoader(this).loadUserPicture(mUserDetails.image,iv_user_photo)
+            et_first_name.setText(mUserDetails.firstName)
+            et_last_name.setText(mUserDetails.lastName)
+            et_email.isEnabled = false
+            et_email.setText(mUserDetails.email)
+
+            if(mUserDetails.mobile != 0L){
+                et_mobile_number.setText(mUserDetails.mobile.toString())
+            }
+            if(mUserDetails.gender == Constants.MALE){
+                rb_male.isChecked = true
+            }else{
+                rb_female.isChecked = true
+            }
+
+        }
+
         //the some of the edittext components are disabled because it is added at a time of Registration.
 
         et_first_name.setText(mUserDetails.firstName)
@@ -65,6 +96,16 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
         // Assign the on click event to the SAVE button.
         btn_submit.setOnClickListener(this@UserProfileActivity)
+    }
+
+    private fun setupActionBar(){
+        setSupportActionBar(toolbar_user_profile_activity)
+        val actionBar = supportActionBar
+        if(actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+        toolbar_user_profile_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
     override fun onClick(v: View?) {
@@ -121,6 +162,16 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
         // Here we get the text from editText and trim the space
         val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
 
+        val firstName = et_first_name.text.toString().trim{it <= ' '}
+        if(firstName != mUserDetails.firstName){
+            userHashMap[Constants.FIRSTNAME] = firstName
+        }
+        val lastName = et_last_name.text.toString().trim{it <= ' '}
+        if(firstName != mUserDetails.lastName){
+            userHashMap[Constants.LASTNAME] = lastName
+        }
+
+
         val gender = if (rb_male.isChecked) {
             Constants.MALE
         } else {
@@ -131,8 +182,12 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
             userHashMap[Constants.IMAGE] = mUserProfileImageURL
         }
 
-        if (mobileNumber.isNotEmpty()) {
+        if (mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()) {
             userHashMap[Constants.MOBILE] = mobileNumber.toLong()
+        }
+
+        if(gender.isNotEmpty() && gender != mUserDetails.gender){
+            userHashMap[Constants.GENDER] = gender
         }
 
         userHashMap[Constants.GENDER] = gender
@@ -261,7 +316,7 @@ class UserProfileActivity : popupActivity(), View.OnClickListener {
 
 
         // Redirect to the Main Screen after profile completion.
-        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
 
