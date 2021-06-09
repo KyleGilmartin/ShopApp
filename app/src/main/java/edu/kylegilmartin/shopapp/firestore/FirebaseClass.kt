@@ -14,6 +14,7 @@ import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.models.User
+import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import java.net.URI
@@ -94,12 +95,18 @@ class FirebaseClass {
                             // Call a function of base activity for transferring the result to it.
                             activity.userLoggedInSuccess(user)
                         }
+                        is SettingsActivity ->{
+                            activity.userDetailsSuccess(user)
+                        }
                     }
                 }
                 .addOnFailureListener { e ->
                     // Hide the progress dialog if there is any error. And print the error in log.
                     when (activity) {
                         is LoginActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                        is SettingsActivity ->{
                             activity.hideProgressDialog()
                         }
                     }
