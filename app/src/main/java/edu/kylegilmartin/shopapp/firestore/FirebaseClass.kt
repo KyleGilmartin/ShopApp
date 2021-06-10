@@ -257,4 +257,18 @@ class FirebaseClass {
                 }
     }
 
+    fun deleteProduct(fragment: ProductFragment,productId:String){
+        mFireStore.collection(Constants.PRODUCTS)
+                .document(productId)
+                .delete()
+                .addOnSuccessListener {
+                    fragment.productDeleteSuccess()
+
+                }.addOnFailureListener {
+                    e->
+                    fragment.hideProgressDialog()
+                    Log.e(fragment.requireActivity().javaClass.simpleName,"Error while deleting the product",e)
+                }
+    }
+
 }

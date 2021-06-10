@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import edu.kylegilmartin.shopapp.R
@@ -32,12 +34,52 @@ class ProductFragment : BaseFragment() {
 
            rv_my_product_items.layoutManager = LinearLayoutManager(activity)
            rv_my_product_items.setHasFixedSize(true)
-           val adapterProducts = MyProductListAdapter(requireActivity(),productList)
+           val adapterProducts = MyProductListAdapter(requireActivity(),productList,this)
            rv_my_product_items.adapter = adapterProducts
        }else{
            rv_my_product_items.visibility = View.GONE
            tv_no_products_found.visibility = View.VISIBLE
        }
+    }
+
+    fun deleteProduct(productID:String){
+        //Toast.makeText(requireActivity(),"you can noe delete the product, $productID", Toast.LENGTH_SHORT).show()
+        showAlertDialogToDeleteProduct(productID)
+    }
+    private fun showAlertDialogToDeleteProduct(productID: String) {
+
+        val builder = AlertDialog.Builder(requireActivity())
+        //set title for alert dialog
+        builder.setTitle(resources.getString(R.string.delete_dialog_title))
+        //set message for alert dialog
+        builder.setMessage(resources.getString(R.string.delete_dialog_message))
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+
+        //performing positive action
+        builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->
+
+            showProgressDialog(resources.getString(R.string.please_wait))
+            // Call the function of FireStore class.
+            FirebaseClass().deleteProduct(this, productID)
+            dialogInterface.dismiss()
+        }
+
+        //performing negative action
+        builder.setNegativeButton(resources.getString(R.string.no)) { dialogInterface, _ ->
+
+            dialogInterface.dismiss()
+        }
+        // Create the AlertDialog
+        val alertDialog: AlertDialog = builder.create()
+        // Set other dialog properties
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
+    fun productDeleteSuccess(){
+        hideProgressDialog()
+        Toast.makeText(requireActivity(),resources.getString(R.string.product_delete_success_msg),Toast.LENGTH_SHORT).show()
+        getProductListFromFireStore()
     }
 
     private fun getProductListFromFireStore(){
