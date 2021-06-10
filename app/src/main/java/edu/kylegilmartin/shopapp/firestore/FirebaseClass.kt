@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.load.ImageHeaderParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +19,7 @@ import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
+import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import java.net.URI
@@ -211,6 +213,27 @@ class FirebaseClass {
                 .addOnFailureListener {e->
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while uploading product",e)
+                }
+    }
+
+    fun getProductList(fragment:Fragment){
+        mFireStore.collection(Constants.PRODUCTS)
+                .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+                .get()
+                .addOnSuccessListener { document ->
+                    Log.e("product list",document.documents.toString())
+                    val productList:ArrayList<Product> = ArrayList()
+                    for (i in document.documents){
+                        val product = i.toObject(Product::class.java)
+                        product!!.product_id = i.id
+
+                        productList.add(product)
+                    }
+                    when(fragment){
+                        is ProductFragment ->{
+                            fragment.successProductListFromFireStore(productList)
+                        }
+                    }
                 }
     }
 
