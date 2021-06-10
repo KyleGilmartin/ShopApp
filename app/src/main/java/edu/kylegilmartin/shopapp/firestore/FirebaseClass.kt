@@ -19,6 +19,7 @@ import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
+import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
 import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
@@ -234,6 +235,25 @@ class FirebaseClass {
                             fragment.successProductListFromFireStore(productList)
                         }
                     }
+                }
+    }
+
+    fun getDashboardItemList(fragment: DashboardFragment){
+        mFireStore.collection(Constants.PRODUCTS)
+                .get()
+                .addOnSuccessListener { document ->
+                    val productList: ArrayList<Product> = ArrayList()
+
+                    for (i in document){
+                        val product = i.toObject(Product::class.java)!!
+                        product.product_id = i.id
+                        productList.add(product)
+                    }
+                    fragment.successDashboardItemList(productList)
+
+                }.addOnFailureListener { e->
+                    fragment.hideProgressDialog()
+                    Log.e(fragment.javaClass.simpleName,"Error while loading dashboard items",e)
                 }
     }
 

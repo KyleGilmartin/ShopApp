@@ -81,4 +81,6 @@ class ProductFragment : BaseFragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 }

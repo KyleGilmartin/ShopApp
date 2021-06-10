@@ -6,9 +6,11 @@ import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.firestore.FirebaseClass
+import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : BaseFragment() {
 
     //private lateinit var dashboardViewModel: DashboardViewModel
 
@@ -26,8 +28,7 @@ class DashboardFragment : Fragment() {
     ): View? {
        // dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-            textView.text = "dashborad"
+
         return root
     }
 
@@ -49,5 +50,21 @@ class DashboardFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun successDashboardItemList(dashboardItemsList:ArrayList<Product>){
+        hideProgressDialog()
+
+    }
+
+    private fun getDashboardItemsList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        FirebaseClass().getDashboardItemList(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getDashboardItemsList()
     }
 }
