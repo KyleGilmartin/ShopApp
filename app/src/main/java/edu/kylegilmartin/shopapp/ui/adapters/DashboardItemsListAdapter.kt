@@ -29,7 +29,7 @@ open class DashboardItemsListAdapter (
         val model = list[position]
 
         if (holder is MyViewHolder){
-            GlideLoader(context).loadProductPicture(model.image,holder.itemView.iv_item_image)
+            GlideLoader(context).loadProductPicture(model.image,holder.itemView.iv_dashboard_item_image)
             holder.itemView.tv_dashboard_item_title.text = model.title
             holder.itemView.tv_dashboard_item_price.text = "$${model.price}"
 
