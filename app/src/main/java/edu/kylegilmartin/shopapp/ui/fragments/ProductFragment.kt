@@ -6,11 +6,14 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
+import edu.kylegilmartin.shopapp.ui.adapters.MyProductListAdapter
+import kotlinx.android.synthetic.main.fragment_products.*
 
 class ProductFragment : BaseFragment() {
 
@@ -23,9 +26,18 @@ class ProductFragment : BaseFragment() {
 
     fun successProductListFromFireStore(productList: ArrayList<Product>){
         hideProgressDialog()
-        for (i in productList){
-           Log.i("Product Name",i.title)
-        }
+       if(productList.size > 0){
+           rv_my_product_items.visibility = View.VISIBLE
+           tv_no_products_found.visibility = View.GONE
+
+           rv_my_product_items.layoutManager = LinearLayoutManager(activity)
+           rv_my_product_items.setHasFixedSize(true)
+           val adapterProducts = MyProductListAdapter(requireActivity(),productList)
+           rv_my_product_items.adapter = adapterProducts
+       }else{
+           rv_my_product_items.visibility = View.GONE
+           tv_no_products_found.visibility = View.VISIBLE
+       }
     }
 
     private fun getProductListFromFireStore(){
