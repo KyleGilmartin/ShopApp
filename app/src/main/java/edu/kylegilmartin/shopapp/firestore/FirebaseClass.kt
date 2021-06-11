@@ -18,6 +18,7 @@ import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
+import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
@@ -268,6 +269,22 @@ class FirebaseClass {
                     e->
                     fragment.hideProgressDialog()
                     Log.e(fragment.requireActivity().javaClass.simpleName,"Error while deleting the product",e)
+                }
+    }
+
+    fun getProductDetails(activity: ProductDetailsActivity,productId: String){
+        mFireStore.collection(Constants.PRODUCTS)
+                .document(productId)
+                .get()
+                .addOnSuccessListener { document ->
+                    val product = document.toObject(Product::class.java)
+                    if (product != null) {
+                        activity.productDetailsSuccess(product)
+                    }
+
+                }.addOnFailureListener { e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while getting product details",e)
                 }
     }
 

@@ -1,13 +1,16 @@
 package edu.kylegilmartin.shopapp.ui.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.models.Product
+import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
+import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
@@ -36,6 +39,12 @@ open class MyProductListAdapter (
 
             holder.itemView.ib_delete_product.setOnClickListener{
                 fragment.deleteProduct(model.product_id)
+            }
+
+            holder.itemView.setOnClickListener{
+                val intent = Intent(context,ProductDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID,model.product_id)
+                context.startActivity(intent)
             }
 
         }

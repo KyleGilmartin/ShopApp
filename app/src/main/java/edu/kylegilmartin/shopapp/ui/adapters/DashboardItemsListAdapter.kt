@@ -15,6 +15,9 @@ open class DashboardItemsListAdapter (
     private val context:Context,
     private val list:ArrayList<Product>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+    private var onClickListener:OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -25,6 +28,10 @@ open class DashboardItemsListAdapter (
         )
     }
 
+    fun setOnClickListener(onClickListener: OnClickListener){
+        this.onClickListener = onClickListener
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
 
@@ -32,6 +39,13 @@ open class DashboardItemsListAdapter (
             GlideLoader(context).loadProductPicture(model.image,holder.itemView.iv_dashboard_item_image)
             holder.itemView.tv_dashboard_item_title.text = model.title
             holder.itemView.tv_dashboard_item_price.text = "$${model.price}"
+
+
+            holder.itemView.setOnClickListener{
+                if (onClickListener != null){
+                    onClickListener!!.onClick(position,model)
+                }
+            }
 
         }
     }
@@ -41,5 +55,11 @@ open class DashboardItemsListAdapter (
     }
 
     class MyViewHolder(view:View): RecyclerView.ViewHolder(view)
+
+    interface OnClickListener {
+        fun onClick(position: Int,product: Product){
+
+        }
+    }
 
 }

@@ -29,6 +29,7 @@ object Constants {
     const val USER_PROFILE_INCOMPLETE_CODE = 0
     const val PRODUCT_IMAGE:String = "Product_image"
     const val USER_ID:String = "user_id"
+    const val EXTRA_PRODUCT_ID:String = "extra_product_id"
 
 
     fun showImageChoosen(activity: Activity){

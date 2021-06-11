@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Product
+import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.adapters.DashboardItemsListAdapter
+import edu.kylegilmartin.shopapp.widgets.Constants
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
 class DashboardFragment : BaseFragment() {
@@ -68,6 +70,16 @@ class DashboardFragment : BaseFragment() {
 
             val adapter = DashboardItemsListAdapter(requireActivity(),dashboardItemsList)
             rv_dashboard_items.adapter = adapter
+
+            adapter.setOnClickListener(object: DashboardItemsListAdapter.OnClickListener{
+                override fun onClick(position:Int,product: Product) {
+                    val intent = Intent(context,ProductDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID,product.product_id)
+                    startActivity(intent)
+                }
+
+
+            })
 
         }else{
             rv_dashboard_items.visibility = View.GONE
