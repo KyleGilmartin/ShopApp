@@ -15,6 +15,7 @@ import com.google.firebase.storage.StorageReference
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
+import edu.kylegilmartin.shopapp.models.CartItem
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
@@ -285,6 +286,18 @@ class FirebaseClass {
                 }.addOnFailureListener { e->
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while getting product details",e)
+                }
+    }
+
+    fun addToCart(activity: ProductDetailsActivity,addToCart:CartItem){
+        mFireStore.collection(Constants.CART_ITEMS)
+                .document()
+                .set(addToCart, SetOptions.merge())
+                .addOnSuccessListener {
+                    activity.addToCartSuccess()
+                }.addOnFailureListener { e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while adding item to cart",e)
                 }
     }
 
