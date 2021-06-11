@@ -2,6 +2,7 @@ package edu.kylegilmartin.shopapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Product
@@ -22,6 +23,16 @@ class ProductDetailsActivity : popupActivity() {
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_ID)){
             mProductId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID)!!
 
+        }
+        var productOwnerID:String = ""
+        if(intent.hasExtra(Constants.EXTRA_PRODUCT_OWNER_ID)){
+             productOwnerID = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
+        }
+
+        if(FirebaseClass().getCurrentUserID() == productOwnerID){
+            btn_add_to_cart.visibility = View.GONE
+        }else{
+            btn_add_to_cart.visibility = View.VISIBLE
         }
 
         getProductDetails()
