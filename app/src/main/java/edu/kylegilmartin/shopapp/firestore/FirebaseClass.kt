@@ -19,6 +19,7 @@ import edu.kylegilmartin.shopapp.models.CartItem
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
+import edu.kylegilmartin.shopapp.ui.activities.CartListActivity
 import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
@@ -318,6 +319,36 @@ class FirebaseClass {
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,
                     "Error while checking the cart list",e)
+                }
+    }
+
+    fun getCartList(activity: Activity){
+        mFireStore.collection(Constants.CART_ITEMS)
+                .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+                .get()
+                .addOnSuccessListener {document ->
+                    Log.e(activity.javaClass.simpleName,document.documents.toString())
+                    val list: ArrayList<CartItem> = ArrayList()
+
+                    for (i in document.documents){
+                        val cartItem = i.toObject(CartItem::class.java)!!
+                        cartItem.id = i.id
+
+                        list.add(cartItem)
+                    }
+
+                    when(activity){
+                        is CartListActivity ->{
+                            activity.successCartItemList(list)
+                        }
+                    }
+                } .addOnFailureListener { e->
+                    when(activity){
+                        is CartListActivity ->{
+                            activity.hideProgressDialog()
+                        }
+                    }
+                    Log.e(activity.javaClass.simpleName,"Error while getting the cart list",e)
                 }
     }
 
