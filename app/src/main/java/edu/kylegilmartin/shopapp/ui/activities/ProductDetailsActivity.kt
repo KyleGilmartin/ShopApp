@@ -1,5 +1,6 @@
 package edu.kylegilmartin.shopapp.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -34,12 +35,20 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
 
         if(FirebaseClass().getCurrentUserID() == productOwnerID){
             btn_add_to_cart.visibility = View.GONE
+            btn_go_to_cart.visibility = View.GONE
         }else{
             btn_add_to_cart.visibility = View.VISIBLE
         }
 
         btn_add_to_cart.setOnClickListener(this)
+        btn_go_to_cart.setOnClickListener(this)
         getProductDetails()
+    }
+
+    fun productExistInCart(){
+        hideProgressDialog()
+        btn_add_to_cart.visibility = View.GONE
+        btn_go_to_cart.visibility = View.VISIBLE
     }
 
     private fun getProductDetails(){
@@ -49,12 +58,19 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
 
     fun productDetailsSuccess(product: Product){
         mProductDetails = product
-        hideProgressDialog()
+        //hideProgressDialog()
         GlideLoader(this).loadProductPicture(product.image,iv_product_detail_image)
         tv_product_details_title.text = product.title
         tv_product_details_price.text = "$${product.price}"
         tv_product_details_description.text = product.description
         tv_product_details_stock_quantity.text = product.stock_quantity
+
+
+        if (FirebaseClass().getCurrentUserID() == product.user_id){
+            hideProgressDialog()
+        }else{
+            FirebaseClass().checkIfItemExistInCart(this,mProductId)
+        }
     }
 
     private fun setupActionBar(){
@@ -83,6 +99,9 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
     fun addToCartSuccess(){
         hideProgressDialog()
         Toast.makeText(this,resources.getString(R.string.success_msg_item_added_to_cart),Toast.LENGTH_SHORT).show()
+
+        btn_add_to_cart.visibility = View.GONE
+        btn_go_to_cart.visibility = View.VISIBLE
     }
 
     override fun onClick(v: View?) {
@@ -90,6 +109,9 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
             when(v.id) {
                 R.id.btn_add_to_cart -> {
                     addToCart()
+                }
+                R.id.btn_go_to_cart ->{
+                    startActivity(Intent(this,CartListActivity::class.java))
                 }
             }
         }

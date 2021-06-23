@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Product
+import edu.kylegilmartin.shopapp.ui.activities.CartListActivity
 import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.adapters.DashboardItemsListAdapter
@@ -51,6 +52,12 @@ class DashboardFragment : BaseFragment() {
             R.id.action_settings -> {
 
                 startActivity(Intent(activity, SettingsActivity::class.java))
+
+                return true
+            }
+
+            R.id.action_cart ->{
+                startActivity(Intent(activity, CartListActivity::class.java))
 
                 return true
             }
