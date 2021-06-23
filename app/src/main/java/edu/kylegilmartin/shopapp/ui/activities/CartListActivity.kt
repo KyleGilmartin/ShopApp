@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_settings.*
 
 class CartListActivity : popupActivity() {
     private lateinit var mProductList:ArrayList<Product>
+    private lateinit var mCartListItem:ArrayList<CartItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,23 @@ class CartListActivity : popupActivity() {
     fun successCartItemList(cartList: ArrayList<CartItem>){
         hideProgressDialog()
 
-        if (cartList.size > 0){
+
+        for (product in mProductList){
+            for (cartItem in cartList){
+                if (product.product_id == cartItem.product_id){
+                    cartItem.stock_quantity = product.stock_quantity
+
+                    if (product.stock_quantity.toInt() == 0){
+                        cartItem.cart_quantity = product.stock_quantity
+                    }
+                }
+            }
+        }
+
+        mCartListItem = cartList
+
+
+        if (mCartListItem.size > 0){
             rv_cart_items_list.visibility = View.VISIBLE
             ll_checkout.visibility = View.VISIBLE
             tv_no_cart_item_found.visibility = View.GONE
@@ -55,10 +72,14 @@ class CartListActivity : popupActivity() {
             rv_cart_items_list.adapter = cartListAdapter
 
             var subTotal:Double = 0.0
-            for (item in cartList){
-                val price = item.price.toDouble()
-                val quantity = item.cart_quantity.toInt()
-                subTotal += (price * quantity)
+            for (item in mCartListItem){
+                val availableQuantity = item.stock_quantity.toInt()
+                if (availableQuantity > 0) {
+
+                    val price = item.price.toDouble()
+                    val quantity = item.cart_quantity.toInt()
+                    subTotal += (price * quantity)
+                }
             }
 
             tv_sub_total.text = "$${subTotal}"
@@ -75,8 +96,8 @@ class CartListActivity : popupActivity() {
     }
 
     fun successProductListFromFireStore(productList:ArrayList<Product>){
+        hideProgressDialog()
         mProductList = productList
-
         getCartItemsList()
     }
 
@@ -86,7 +107,7 @@ class CartListActivity : popupActivity() {
     }
 
     private fun getCartItemsList(){
-        showProgressDialog(resources.getString(R.string.please_wait))
+        //showProgressDialog(resources.getString(R.string.please_wait))
         FirebaseClass().getCartList(this)
     }
 }
