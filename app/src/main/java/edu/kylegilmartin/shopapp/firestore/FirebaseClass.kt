@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.load.ImageHeaderParser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -25,9 +24,6 @@ import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
 import edu.kylegilmartin.shopapp.widgets.Constants
-import edu.kylegilmartin.shopapp.widgets.popupActivity
-import java.net.URI
-import java.net.URL
 
 class FirebaseClass {
 
@@ -339,7 +335,7 @@ class FirebaseClass {
 
                     when(activity){
                         is CartListActivity ->{
-                            activity.successCartItemList(list)
+                            activity.successCartItemsList(list)
                         }
                     }
                 } .addOnFailureListener { e->
@@ -365,13 +361,57 @@ class FirebaseClass {
                         productsList.add(product)
                     }
 
-                    activity.successProductListFromFireStore(productsList)
+                    activity.successProductsListFromFireStore(productsList)
 
                 }
                 .addOnFailureListener { e->
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while getting all products list",e)
 
+                }
+    }
+
+    fun removeItemFromCart(context: Context,cart_id:String){
+        mFireStore.collection(Constants.CART_ITEMS)
+                .document(cart_id)
+                .delete()
+                .addOnSuccessListener {
+                when(context){
+                    is CartListActivity ->{
+                        context.itemRemovedSuccess()
+                    }
+                }
+                }
+                .addOnFailureListener {
+                    e->
+                    when(context){
+                        is CartListActivity ->{
+                            context.hideProgressDialog()
+                        }
+                    }
+                    Log.e(context.javaClass.simpleName,"Error when removing item from cart",e)
+                }
+    }
+
+    fun updateMyCart(context: Context,cart_id: String,itemHashMap: HashMap<String,Any>){
+        mFireStore.collection(Constants.CART_ITEMS)
+        .document(cart_id)
+        .update(itemHashMap)
+                .addOnSuccessListener {
+                        when (context){
+                            is CartListActivity ->{
+                                context.itemUpdateSuccess()
+                            }
+                        }
+                }
+                .addOnFailureListener {
+                    e->
+                    when(context){
+                        is CartListActivity ->{
+                            context.hideProgressDialog()
+                        }
+                    }
+                    Log.e(context.javaClass.simpleName,"Error when updating cart",e)
                 }
     }
 

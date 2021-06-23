@@ -3,14 +3,12 @@ package edu.kylegilmartin.shopapp.ui.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.GridLayout
-import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.ui.activities.CartListActivity
+
 import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
 import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
 import edu.kylegilmartin.shopapp.ui.adapters.DashboardItemsListAdapter

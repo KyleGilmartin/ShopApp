@@ -1,10 +1,10 @@
 package edu.kylegilmartin.shopapp.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.CartItem
@@ -13,7 +13,6 @@ import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.GlideLoader
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_product_details.*
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class ProductDetailsActivity : popupActivity(),View.OnClickListener {
     private var mProductId: String =""
@@ -65,12 +64,23 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
         tv_product_details_description.text = product.description
         tv_product_details_stock_quantity.text = product.stock_quantity
 
-
-        if (FirebaseClass().getCurrentUserID() == product.user_id){
+        if (product.stock_quantity.toInt() == 0){
             hideProgressDialog()
+
+            btn_add_to_cart.visibility = View.GONE
+            tv_product_details_stock_quantity.text = resources.getString(R.string.lbl_out_of_stock)
+            tv_product_details_stock_quantity.setTextColor(ContextCompat.getColor(this,R.color.colorSnackBarError))
         }else{
-            FirebaseClass().checkIfItemExistInCart(this,mProductId)
+
+            if (FirebaseClass().getCurrentUserID() == product.user_id){
+                hideProgressDialog()
+            }else{
+                FirebaseClass().checkIfItemExistInCart(this,mProductId)
+            }
         }
+
+
+
     }
 
     private fun setupActionBar(){
@@ -111,7 +121,7 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
                     addToCart()
                 }
                 R.id.btn_go_to_cart ->{
-                    startActivity(Intent(this,CartListActivity::class.java))
+                    startActivity(Intent(this, CartListActivity::class.java))
                 }
             }
         }

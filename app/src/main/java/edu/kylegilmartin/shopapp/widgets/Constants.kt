@@ -34,6 +34,7 @@ object Constants {
     const val DEFAULT_CART_QUANTITY:String = "1"
     const val CART_ITEMS:String = "cart_items"
     const val PRODUCT_ID:String = "product_id"
+    const val CART_QUANTITY:String = "cart_quantity"
 
 
     fun showImageChoosen(activity: Activity){
