@@ -105,7 +105,7 @@ class CartItemsListAdapter (
                     FirebaseClass().updateMyCart(context,model.id,itemHasMap)
                 }else{
                     if (context is CartListActivity){
-                       // holder.itemView.ib_add_cart_item.isClickable = false
+                        holder.itemView.ib_add_cart_item.isClickable = false
                         holder.itemView.ib_add_cart_item.setColorFilter(ContextCompat.getColor(context, R.color.white), android.graphics.PorterDuff.Mode.SRC_IN)
 
                        // context.showErrorSnackBar(context.resources.getString(R.string.msg_for_available_stock,model.stock_quantity),true)
