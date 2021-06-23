@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.CartItem
+import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.ui.adapters.CartItemsListAdapter
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_cart_list.*
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class CartListActivity : popupActivity() {
+    private lateinit var mProductList:ArrayList<Product>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart_list)
@@ -33,7 +36,8 @@ class CartListActivity : popupActivity() {
 
     override fun onResume() {
         super.onResume()
-        getCartItemsList()
+        //getCartItemsList()
+        getProductList()
     }
 
     fun successCartItemList(cartList: ArrayList<CartItem>){
@@ -68,6 +72,17 @@ class CartListActivity : popupActivity() {
                 ll_checkout.visibility = View.GONE
             }
         }
+    }
+
+    fun successProductListFromFireStore(productList:ArrayList<Product>){
+        mProductList = productList
+
+        getCartItemsList()
+    }
+
+    private fun getProductList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirebaseClass().getAllProductsList(this)
     }
 
     private fun getCartItemsList(){

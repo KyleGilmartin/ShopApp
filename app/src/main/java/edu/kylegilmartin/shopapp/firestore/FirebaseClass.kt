@@ -352,4 +352,27 @@ class FirebaseClass {
                 }
     }
 
+    fun getAllProductsList(activity: CartListActivity){
+        mFireStore.collection(Constants.PRODUCTS)
+                .get()
+                .addOnSuccessListener { document ->
+
+                    val productsList:ArrayList<Product> = ArrayList()
+                    for (i in document.documents){
+                        val product = i.toObject(Product::class.java)
+                        product!!.product_id = i.id
+
+                        productsList.add(product)
+                    }
+
+                    activity.successProductListFromFireStore(productsList)
+
+                }
+                .addOnFailureListener { e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while getting all products list",e)
+
+                }
+    }
+
 }
