@@ -62,7 +62,7 @@ class CartListActivity : popupActivity() {
 
             if (subTotal > 0){
                 ll_checkout.visibility = View.VISIBLE
-                val total = subTotal + 10
+                val total = subTotal + 10 // shipping charge
                 tv_total_amount.text = "$${total}"
             }else{
                 ll_checkout.visibility = View.GONE
