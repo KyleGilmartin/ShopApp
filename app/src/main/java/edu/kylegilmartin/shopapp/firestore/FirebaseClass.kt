@@ -461,4 +461,18 @@ class FirebaseClass {
                 }
     }
 
+    fun deleteAddress(activity: AddressListActivity,addressId: String){
+        mFireStore.collection(Constants.ADDRESSES)
+                .document(addressId)
+                .delete()
+                .addOnSuccessListener {
+                    activity.deleteAddressSuccess()
+                }
+                .addOnFailureListener {
+                    e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while deleting the address",e)
+                }
+    }
+
 }

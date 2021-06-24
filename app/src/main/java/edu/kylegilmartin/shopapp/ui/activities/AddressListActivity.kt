@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.myshoppal.utils.SwipeToDeleteCallback
 import com.myshoppal.utils.SwipeToEditCallback
 import edu.kylegilmartin.shopapp.R
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
@@ -80,20 +81,20 @@ class AddressListActivity : popupActivity() {
                 editItemTouchHelper.attachToRecyclerView(rv_address_list)
 
 
-//                val deleteSwipeHandler = object : SwipeToDeleteCallback(this) {
-//                   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//
-//                        // Show the progress dialog.
-//                        showProgressDialog(resources.getString(R.string.please_wait))
-//
-//                        FirebaseClass().deleteAddress(
-//                                this@AddressListActivity,
-//                                addressList[viewHolder.adapterPosition].id
-//                        )
-//                    }
-//               }
-//               val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
-//               deleteItemTouchHelper.attachToRecyclerView(rv_address_list)
+                val deleteSwipeHandler = object : SwipeToDeleteCallback(this) {
+                   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+
+                        // Show the progress dialog.
+                        showProgressDialog(resources.getString(R.string.please_wait))
+
+                        FirebaseClass().deleteAddress(
+                                this@AddressListActivity,
+                                addressList[viewHolder.adapterPosition].id
+                        )
+                    }
+               }
+               val deleteItemTouchHelper = ItemTouchHelper(deleteSwipeHandler)
+               deleteItemTouchHelper.attachToRecyclerView(rv_address_list)
            }
         } else {
             rv_address_list.visibility = View.GONE
@@ -104,19 +105,19 @@ class AddressListActivity : popupActivity() {
     /**
      * A function notify the user that the address is deleted successfully.
      */
-//    fun deleteAddressSuccess() {
-//
-//        // Hide progress dialog.
-//        hideProgressDialog()
-//
-//        Toast.makeText(
-//                this@AddressListActivity,
-//                resources.getString(R.string.err_your_address_deleted_successfully),
-//                Toast.LENGTH_SHORT
-//        ).show()
-//
-//        getAddressList()
-//    }
+    fun deleteAddressSuccess() {
+
+        // Hide progress dialog.
+       hideProgressDialog()
+
+        Toast.makeText(
+                this@AddressListActivity,
+                resources.getString(R.string.err_your_address_deleted_successfully),
+                Toast.LENGTH_SHORT
+        ).show()
+
+       getAddressList()
+    }
 
 
     private fun getAddressList(){
