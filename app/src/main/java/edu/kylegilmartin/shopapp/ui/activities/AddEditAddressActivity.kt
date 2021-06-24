@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_add_edit_address.*
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class AddEditAddressActivity : popupActivity() {
+
     private var mAddressDetails: Address? = null
 
     /**
@@ -68,7 +69,7 @@ class AddEditAddressActivity : popupActivity() {
         }
 
         btn_submit_address.setOnClickListener {
-            saveAddressToFireStore()
+            saveAddressToFirestore()
         }
     }
 
@@ -135,7 +136,7 @@ class AddEditAddressActivity : popupActivity() {
     /**
      * A function to save the address to the cloud firestore.
      */
-    private fun saveAddressToFireStore() {
+    private fun saveAddressToFirestore() {
 
         // Here we get the text from editText and trim the space
         val fullName: String = et_full_name.text.toString().trim { it <= ' ' }
@@ -174,11 +175,11 @@ class AddEditAddressActivity : popupActivity() {
             )
 
             if (mAddressDetails != null && mAddressDetails!!.id.isNotEmpty()) {
-               // FirebaseClass().updateAddress(
-                 //   this@AddEditAddressActivity,
-                 //   addressModel,
-                  //  mAddressDetails!!.id
-              //  )
+                FirebaseClass().updateAddress(
+                    this@AddEditAddressActivity,
+                    addressModel,
+                    mAddressDetails!!.id
+                )
             } else {
                 FirebaseClass().addAddress(this@AddEditAddressActivity, addressModel)
             }
