@@ -1,5 +1,6 @@
 package edu.kylegilmartin.shopapp.ui.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.CartItem
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.ui.adapters.CartItemsListAdapter
+import edu.kylegilmartin.shopapp.widgets.Constants
 import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_cart_list.*
 
@@ -30,6 +32,12 @@ class CartListActivity : popupActivity() {
         setContentView(R.layout.activity_cart_list)
 
         setupActionBar()
+
+        btn_checkout.setOnClickListener {
+            val intent = Intent(this,AddressListActivity::class.java)
+            intent.putExtra(Constants.EXTRA_SELECT_ADDRESS,true)
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {

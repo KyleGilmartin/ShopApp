@@ -440,7 +440,7 @@ class FirebaseClass {
                         address.id = i.id
                         addressList.add(address)
                     }
-                    activity.successAddressListFromFireStore(addressList)
+                    activity.successAddressListFromFirestore(addressList)
                 }.addOnFailureListener {
                     e->
                     activity.hideProgressDialog()
