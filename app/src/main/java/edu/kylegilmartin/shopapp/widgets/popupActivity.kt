@@ -52,8 +52,8 @@ open class popupActivity : AppCompatActivity() {
 
         mProgressDialog.tv_progress_text.text = text
 
-        mProgressDialog.setCancelable(false)
-        mProgressDialog.setCanceledOnTouchOutside(false)
+       mProgressDialog.setCancelable(false)
+       mProgressDialog.setCanceledOnTouchOutside(false)
 
         //Start the dialog and display it on screen.
         mProgressDialog.show()
