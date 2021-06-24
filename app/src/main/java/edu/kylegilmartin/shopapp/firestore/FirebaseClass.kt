@@ -14,13 +14,11 @@ import com.google.firebase.storage.StorageReference
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
+import edu.kylegilmartin.shopapp.models.Address
 import edu.kylegilmartin.shopapp.models.CartItem
 import edu.kylegilmartin.shopapp.models.Product
 import edu.kylegilmartin.shopapp.models.User
-import edu.kylegilmartin.shopapp.ui.activities.AddProductActivity
-import edu.kylegilmartin.shopapp.ui.activities.CartListActivity
-import edu.kylegilmartin.shopapp.ui.activities.ProductDetailsActivity
-import edu.kylegilmartin.shopapp.ui.activities.SettingsActivity
+import edu.kylegilmartin.shopapp.ui.activities.*
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
 import edu.kylegilmartin.shopapp.widgets.Constants
@@ -412,6 +410,20 @@ class FirebaseClass {
                         }
                     }
                     Log.e(context.javaClass.simpleName,"Error when updating cart",e)
+                }
+    }
+
+    fun addAddress(activity: AddEditAddressActivity,addressInfo:Address){
+        mFireStore.collection(Constants.ADDRESSES)
+                .document()
+                .set(addressInfo, SetOptions.merge())
+                .addOnSuccessListener {
+                    activity.addUpdateAddressSuccess()
+                }
+                .addOnFailureListener {
+                    e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while adding the address",e)
                 }
     }
 
