@@ -3,15 +3,23 @@ package edu.kylegilmartin.shopapp.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.Address
+import edu.kylegilmartin.shopapp.models.CartItem
+import edu.kylegilmartin.shopapp.models.Product
+import edu.kylegilmartin.shopapp.ui.adapters.CartItemsListAdapter
 import edu.kylegilmartin.shopapp.widgets.Constants
+import edu.kylegilmartin.shopapp.widgets.popupActivity
 import kotlinx.android.synthetic.main.activity_checkout.*
 
 
-class CheckoutActivity : AppCompatActivity() {
+class CheckoutActivity : popupActivity() {
 
     private var mAddressDetails: Address? = null
+    private lateinit var mProductList:ArrayList<Product>
+    private lateinit var mCartItemsList:ArrayList<CartItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +42,43 @@ class CheckoutActivity : AppCompatActivity() {
                 tv_checkout_other_details.text = mAddressDetails?.otherDetails
             }
         }
+
+        getProductList()
+    }
+
+    fun successProductListFromFireStore(productsList:ArrayList<Product>){
+
+        mProductList = productsList
+
+        getCartItemsList()
+    }
+
+    private fun getCartItemsList(){
+        FirebaseClass().getCartList(this)
+    }
+
+    fun successCartItemList(cartList:ArrayList<CartItem>){
+        hideProgressDialog()
+        for (product in mProductList){
+            for (cart in cartList){
+                if (product.product_id == cart.product_id){
+                    cart.stock_quantity = product.stock_quantity
+                }
+            }
+        }
+
+        mCartItemsList = cartList
+
+        rv_cart_list_items.layoutManager = LinearLayoutManager(this)
+        rv_cart_list_items.setHasFixedSize(true)
+
+        val cartListAdapter = CartItemsListAdapter(this,mCartItemsList,false)
+        rv_cart_list_items.adapter = cartListAdapter
+    }
+
+    private fun getProductList(){
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FirebaseClass().getAllProductsList(this)
     }
 
     private fun setupActionBar(){

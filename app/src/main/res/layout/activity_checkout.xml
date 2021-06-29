@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar_checkout_activity"
+        android:layout_above="@+id/ll_checkout_place_order"
         android:fillViewport="true"
         android:scrollbars="none">
 
@@ -47,7 +48,6 @@
                 android:layout_marginStart="@dimen/checkout_content_marginStartEnd"
                 android:layout_marginTop="@dimen/checkout_content_marginTopBottom"
                 android:layout_marginEnd="@dimen/checkout_content_marginStartEnd"
-                android:layout_marginBottom="@dimen/checkout_content_marginTopBottom"
                 android:paddingTop="@dimen/checkout_content_lbl_padding"
                 android:paddingBottom="@dimen/checkout_content_lbl_padding"
                 android:text="@string/checkout_lbl_product_items"

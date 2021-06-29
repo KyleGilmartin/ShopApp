@@ -335,10 +335,16 @@ class FirebaseClass {
                         is CartListActivity ->{
                             activity.successCartItemsList(list)
                         }
+                        is CheckoutActivity ->{
+                            activity.successCartItemList(list)
+                        }
                     }
                 } .addOnFailureListener { e->
                     when(activity){
                         is CartListActivity ->{
+                            activity.hideProgressDialog()
+                        }
+                        is CheckoutActivity ->{
                             activity.hideProgressDialog()
                         }
                     }
@@ -346,7 +352,7 @@ class FirebaseClass {
                 }
     }
 
-    fun getAllProductsList(activity: CartListActivity){
+    fun getAllProductsList(activity: Activity){
         mFireStore.collection(Constants.PRODUCTS)
                 .get()
                 .addOnSuccessListener { document ->
@@ -358,13 +364,29 @@ class FirebaseClass {
 
                         productsList.add(product)
                     }
+                    when(activity){
+                        is CartListActivity ->{
+                            activity.successProductsListFromFireStore(productsList)
 
-                    activity.successProductsListFromFireStore(productsList)
+                        }
+                        is CheckoutActivity ->{
+                            activity.successProductListFromFireStore(productsList)
+                        }
+
+                    }
 
                 }
                 .addOnFailureListener { e->
-                    activity.hideProgressDialog()
-                    Log.e(activity.javaClass.simpleName,"Error while getting all products list",e)
+                    when(activity) {
+                        is CartListActivity -> {
+                            activity.hideProgressDialog()
+                        }
+                        is CheckoutActivity ->{
+                            activity.hideProgressDialog()
+                        }
+                    }
+
+                    Log.e(activity.javaClass.simpleName, "Error while getting all products list", e)
 
                 }
     }
