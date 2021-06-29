@@ -17,6 +17,7 @@ import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.models.*
 import edu.kylegilmartin.shopapp.ui.activities.*
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
+import edu.kylegilmartin.shopapp.ui.fragments.OrdersFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
 import edu.kylegilmartin.shopapp.widgets.Constants
 
@@ -536,6 +537,27 @@ class FirebaseClass {
                 .addOnFailureListener {e->
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while updating all the details after placing an order .",e) }
+    }
+
+    fun getMyOrdersList(fragment: OrdersFragment){
+        mFireStore.collection(Constants.ORDERS)
+                .whereEqualTo(Constants.USER_ID,getCurrentUserID())
+                .get()
+                .addOnSuccessListener {document ->
+                    val list: ArrayList<Order> = ArrayList()
+
+                    for (i in document.documents){
+                        val orderItem = i.toObject(Order::class.java)!!
+                        orderItem.id = i.id
+                        list.add(orderItem)
+                    }
+
+                    fragment.populateOrdersListInUI(list)
+                }
+                .addOnFailureListener {e->
+                    fragment.hideProgressDialog()
+                    Log.e(fragment.javaClass.simpleName,"Error while getting the orders list",e)
+                }
     }
 
 }

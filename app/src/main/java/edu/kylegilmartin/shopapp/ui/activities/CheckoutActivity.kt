@@ -83,7 +83,8 @@ class CheckoutActivity : popupActivity() {
                    mCartItemsList[0].image,
                    mSubTotal.toString(),
                    "10.00",
-                   mTotalAmount.toString()
+                   mTotalAmount.toString(),
+                   System.currentTimeMillis()
            )
 
            FirebaseClass().placeOrder(this,order)
