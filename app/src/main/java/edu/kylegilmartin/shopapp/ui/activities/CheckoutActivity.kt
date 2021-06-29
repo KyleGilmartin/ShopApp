@@ -59,6 +59,10 @@ class CheckoutActivity : popupActivity() {
     }
 
     fun orderplaceSuccess(){
+        FirebaseClass().updateProductCartDetails(this,mCartItemsList)
+    }
+
+    fun allDetailsUpdatedSuccessFully(){
         hideProgressDialog()
 
         val intent = Intent(this,OrderPlacedActivity::class.java)
@@ -143,6 +147,8 @@ class CheckoutActivity : popupActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
         FirebaseClass().getAllProductsList(this)
     }
+
+
 
     private fun setupActionBar(){
         setSupportActionBar(toolbar_checkout_activity)
