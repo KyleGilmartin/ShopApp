@@ -14,10 +14,7 @@ import com.google.firebase.storage.StorageReference
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.RegisterActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
-import edu.kylegilmartin.shopapp.models.Address
-import edu.kylegilmartin.shopapp.models.CartItem
-import edu.kylegilmartin.shopapp.models.Product
-import edu.kylegilmartin.shopapp.models.User
+import edu.kylegilmartin.shopapp.models.*
 import edu.kylegilmartin.shopapp.ui.activities.*
 import edu.kylegilmartin.shopapp.ui.fragments.DashboardFragment
 import edu.kylegilmartin.shopapp.ui.fragments.ProductFragment
@@ -494,6 +491,19 @@ class FirebaseClass {
                     e->
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while deleting the address",e)
+                }
+    }
+
+    fun placeOrder(activity: CheckoutActivity,order:Order){
+        mFireStore.collection(Constants.ORDERS)
+                .document()
+                .set(order, SetOptions.merge())
+                .addOnSuccessListener {
+                activity.orderplaceSuccess()
+                }
+                .addOnFailureListener { e->
+                    activity.hideProgressDialog()
+                    Log.e(activity.javaClass.simpleName,"Error while placing an order.",e)
                 }
     }
 

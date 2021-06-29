@@ -94,7 +94,7 @@ class LoginActivity : popupActivity(),View.OnClickListener {
     private fun loginRegisteredUser(){
         if(validateLoginDetails()){
             // show the progress bar
-            showProgressDialog(resources.getString(R.string.please_wait))
+            showProgressDialog(resources.getString(R.string.logging_in_user))
 
             //get the text from editText and trim the space
             val email = et_email_login.text.toString().trim{it <= ' '}
