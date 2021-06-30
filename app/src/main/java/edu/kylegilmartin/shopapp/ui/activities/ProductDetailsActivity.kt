@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_product_details.*
 class ProductDetailsActivity : popupActivity(),View.OnClickListener {
     private var mProductId: String =""
     private lateinit var mProductDetails:Product
+    private var mProductOwnerId:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,12 +28,12 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
             mProductId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID)!!
 
         }
-        var productOwnerID:String = ""
+        //var productOwnerID:String = ""
         if(intent.hasExtra(Constants.EXTRA_PRODUCT_OWNER_ID)){
-             productOwnerID = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
+            mProductOwnerId = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
         }
 
-        if(FirebaseClass().getCurrentUserID() == productOwnerID){
+        if(FirebaseClass().getCurrentUserID() == mProductOwnerId){
             btn_add_to_cart.visibility = View.GONE
             btn_go_to_cart.visibility = View.GONE
         }else{
@@ -96,6 +97,7 @@ class ProductDetailsActivity : popupActivity(),View.OnClickListener {
     private fun addToCart(){
         val addToCart = CartItem(
                 FirebaseClass().getCurrentUserID(),
+                mProductOwnerId,
                 mProductId,
                 mProductDetails.title,
                 mProductDetails.price,

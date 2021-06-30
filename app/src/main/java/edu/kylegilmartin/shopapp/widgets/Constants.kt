@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
+    const val SOLD_PRODUCTS: String = "sold_products"
     const val USERS : String = "users"
     const val PRODUCTS:String ="products"
 

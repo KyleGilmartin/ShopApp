@@ -28,6 +28,7 @@ class CheckoutActivity : popupActivity() {
     private lateinit var mCartItemsList:ArrayList<CartItem>
     private var mSubTotal:Double = 0.0
     private var mTotalAmount:Double = 0.0
+    private lateinit var mOrderDetails:Order
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +60,7 @@ class CheckoutActivity : popupActivity() {
     }
 
     fun orderplaceSuccess(){
-        FirebaseClass().updateProductCartDetails(this,mCartItemsList)
+        FirebaseClass().updateProductCartDetails(this,mCartItemsList,mOrderDetails)
     }
 
     fun allDetailsUpdatedSuccessFully(){
@@ -75,7 +76,7 @@ class CheckoutActivity : popupActivity() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
        if (mAddressDetails != null){
-           val order = Order(
+           mOrderDetails = Order(
                    FirebaseClass().getCurrentUserID(),
                    mCartItemsList,
                    mAddressDetails!!,
@@ -87,7 +88,7 @@ class CheckoutActivity : popupActivity() {
                    System.currentTimeMillis()
            )
 
-           FirebaseClass().placeOrder(this,order)
+           FirebaseClass().placeOrder(this,mOrderDetails)
        }
     }
 

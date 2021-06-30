@@ -508,19 +508,28 @@ class FirebaseClass {
                 }
     }
 
-    fun updateProductCartDetails(activity: CheckoutActivity,cartList:ArrayList<CartItem>){
+    fun updateProductCartDetails(activity: CheckoutActivity,cartList:ArrayList<CartItem>,order: Order){
         val writeBatch = mFireStore.batch()
 
         for (cartItem  in cartList){
-            val productHashMap = HashMap<String, Any>()
+          val soldProduct = SoldProduct(
+                  cartItem.product_owner_id,
+                  cartItem.title,
+                  cartItem.price,
+                  cartItem.cart_quantity,
+                  cartItem.image,
+                  order.title,
+                  order.order_datetime,
+                  order.sub_total_amount,
+                  order.shipping_charge,
+                  order.total_amount,
+                  order.address
+          )
 
-            productHashMap[Constants.STOCK_QUANTITY] =
-                    (cartItem.stock_quantity.toInt() - cartItem.cart_quantity.toInt()).toString()
-
-            val documentReference = mFireStore.collection(Constants.PRODUCTS)
+            val documentReference = mFireStore.collection(Constants.SOLD_PRODUCTS)
                     .document(cartItem.product_id)
 
-            writeBatch.update(documentReference,productHashMap)
+            writeBatch.set(documentReference,soldProduct)
 
         }
 
