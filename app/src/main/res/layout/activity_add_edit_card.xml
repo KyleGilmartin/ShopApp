@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+
             android:id="@+id/tv_title_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
