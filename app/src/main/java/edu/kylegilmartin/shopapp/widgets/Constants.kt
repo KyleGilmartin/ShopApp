@@ -7,6 +7,8 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
+    const val CARD: String = "card"
+    const val Admin_code = 1
     const val SOLD_PRODUCTS: String = "sold_products"
     const val USERS : String = "users"
     const val PRODUCTS:String ="products"
@@ -42,6 +44,7 @@ object Constants {
     const val OTHER:String = "Other"
     const val ADDRESSES:String = "addresses"
     const val EXTRA_ADDRESS_DETAILS: String = "AddressDetails"
+    const val EXTRA_CARD_DETAILS:String ="CardDetails"
     const val EXTRA_SELECT_ADDRESS:String = "extra_selected_address"
     const val ADD_ADDRESS_REQUEST_CODE: Int = 121
     const val EXTRA_SELECTED_ADDRESS:String = "extra_selected_address"

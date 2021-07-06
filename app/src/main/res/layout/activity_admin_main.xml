@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/container_admin"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:id="@+id/admin_nav_view"
+        app:menu="@menu/admin_bottom_nav_menu"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemTextColor="@color/white"
+        app:itemIconTint="@color/white"
+        android:background="@drawable/app_gradient_color_background"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"/>
+
+    <fragment android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/nav_admin_fragment"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:navGraph="@navigation/admin_mobile_navigation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/admin_nav_view"
+        app:defaultNavHost="true"
+        android:name="androidx.navigation.fragment.NavHostFragment"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

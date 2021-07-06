@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import edu.kylegilmartin.shopapp.LoginRegister.LoginActivity
 import edu.kylegilmartin.shopapp.LoginRegister.UserProfileActivity
 import edu.kylegilmartin.shopapp.R
+import edu.kylegilmartin.shopapp.admin.UI.activities.AdminMainActivity
 import edu.kylegilmartin.shopapp.firestore.FirebaseClass
 import edu.kylegilmartin.shopapp.models.User
 import edu.kylegilmartin.shopapp.widgets.Constants
@@ -36,6 +37,8 @@ class SettingsActivity : popupActivity(), View.OnClickListener {
         toolbar_settings_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+
+
     private  fun getUserDetails(){
         showProgressDialog(resources.getString(R.string.please_wait))
         FirebaseClass().getUserDetails(this)
@@ -51,6 +54,17 @@ class SettingsActivity : popupActivity(), View.OnClickListener {
         tv_gender.text = "${user.gender}"
         tv_email.text = "${user.email}"
         tv_mobile_number.text = "${user.mobile}"
+
+         if (user.admin == Constants.Admin_code){
+             btn_go_to_admin.visibility = View.VISIBLE
+
+             btn_go_to_admin.setOnClickListener {
+                 val intent = Intent(this, AdminMainActivity::class.java)
+                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                 startActivity(intent)
+                 finish()
+             }
+         }
     }
 
     override fun onResume() {

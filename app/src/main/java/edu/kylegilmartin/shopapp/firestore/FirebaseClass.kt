@@ -100,6 +100,7 @@ class FirebaseClass {
                         is SettingsActivity ->{
                             activity.userDetailsSuccess(user)
                         }
+
                     }
                 }
                 .addOnFailureListener { e ->
@@ -446,6 +447,20 @@ class FirebaseClass {
                     activity.hideProgressDialog()
                     Log.e(activity.javaClass.simpleName,"Error while adding the address",e)
                 }
+    }
+
+    fun addCard(activity: AddEditCardActivity,cardInfo:Card){
+        mFireStore.collection(Constants.CARD)
+            .document()
+            .set(cardInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addUpdateCardSuccess()
+            }
+            .addOnFailureListener {
+                    e->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName,"Error while adding the card",e)
+            }
     }
 
     fun getAddressesList(activity: AddressListActivity){

@@ -144,6 +144,16 @@
     <string name="title_sold_products">Sold Products</string>
     <string name="no_products_sold_out_yet">No products sold out yet!</string>
     <string name="title_sold_product_details">SOLD PRODUCT DETAILS</string>
+    <string name="no_card_found">No Card Found!</string>
+    <string name="lbL_add_card">Add Card</string>
+    <string name="title_card_list">Card List</string>
+    <string name="msg_your_card_updated_successfully">Your card has been updated</string>
+    <string name="err_your_card_added_successfully">Error updating your card</string>
+    <string name="title_add_card">Add Card</string>
+    <string name="hint_year_number">Year</string>
+    <string name="hint_month_number">Month</string>
+    <string name="hint_card_number">Card Number</string>
+    <string name="hint_CSV">CSV</string>
 
 
 </resources>
